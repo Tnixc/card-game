@@ -1,5 +1,7 @@
 <script lang="ts">
     import Placed from "./Placed.svelte";
+    import { flip } from "svelte/animate";
+    import { fade } from "svelte/transition";
     let handInput = "";
     let handCards: number[] = [];
     let savedHandState: number[] = [];
@@ -157,12 +159,16 @@
 <Placed bind:this={placedComponent} />
 
 <div
-    class="nes-container with-title shadow-[inset_0_0_10px_#0004] bg-[#F7D51F33] mt-10"
+    class="nes-container with-title shadow-[inset_0_0_10px_#0004] bg-[#F7D51F33] mt-10 transition-[height] duration-300"
+    style="min-height: {handCards.length ? '200px' : '100px'}"
 >
     <p class="title font-bold -translate-y-2 scale-120 border-3">Hand</p>
     <div class="grid grid-cols-13 gap-2">
-        {#each handCards as cardNumber, index}
+        {#each handCards as cardNumber, index (cardNumber)}
             <img
+                animate:flip={{ duration: 300 }}
+                in:flip
+                out:fade={{ duration: 200 }}
                 draggable="false"
                 class="{!isFlashLast && index === 0
                     ? counter % 2 === 0
