@@ -82,10 +82,11 @@
 
     <h1 class="text-xl mb-4">Table</h1>
     <div
-        class="grid grid-cols-13 gap-2 p-12 border-blue-500 border-2 border-dashed bg-blue-100/50 shadow-[inset_0_0_10px_#0003]"
+        class="grid grid-cols-13 gap-2 p-4 border-blue-500 border-2 border-dashed bg-blue-100/50 shadow-[inset_0_0_10px_#0003]"
     >
         {#each cards as cardNumber, index}
             <img
+                class="hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
                 draggable="false"
                 src="/images/{cardNumber}.webp"
                 alt="card {cardNumber}"

@@ -29,12 +29,5 @@ img {
   width: 96px;
   border: 2px solid var(--color-stone-300);
   transition: 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
-
-  &:hover {
-    transform: scale(1.1) rotate(5deg);
-    z-index: 99;
-    box-shadow: 10px 10px 20px #0002;
-  }
-
   user-select: none;
 }

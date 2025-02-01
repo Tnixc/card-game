@@ -2,6 +2,8 @@
     import Placed from "./Placed.svelte";
     let handInput = "";
     let handCards: number[] = [];
+    let savedHandState: number[] = [];
+    let hasStoredState = false;
     let debounceTimer: number;
     let placedComponent: Placed;
     let playTimer: number;
@@ -54,14 +56,22 @@
         }, 300);
     }
 
-    function clearHand() {
-        handInput = "";
-        handCards = [];
+    function storeHandState() {
+        savedHandState = [...handCards];
+        hasStoredState = true;
+    }
+
+    function revertHand() {
+        handCards = [...savedHandState];
+        updateInputFromCards();
+        hasStoredState = false;
+        counter = 0;
         if (placedComponent) placedComponent.clear();
     }
 
     function playOne() {
         if (handCards.length === 0) return;
+        if (!hasStoredState) storeHandState();
         const [first, ...rest] = handCards;
         if (handCards.length <= 1) counter = 0;
         if (counter % 2 === 0) {
@@ -78,8 +88,20 @@
 
     function playAll() {
         if (handCards.length === 0) return;
+        if (!hasStoredState) storeHandState();
         playOne();
         playTimer = setTimeout(playAll, 100);
+    }
+
+    function clearHand() {
+        handInput = "";
+        handCards = [];
+        counter = 0;
+        hasStoredState = false;
+    }
+    function clearPlaced() {
+        if (placedComponent) placedComponent.clear();
+        counter = 0;
     }
 </script>
 
@@ -91,7 +113,8 @@
         class="w-full p-2 border border-stone-300 rounded h-[42px] min-h-[42px] resize-y"
     />
     <div class="flex gap-3 items-center">
-        <button on:click={clearHand}>Clear All</button>
+        <button on:click={clearHand}>Clear Hand</button>
+        <button on:click={revertHand} disabled={!hasStoredState}>Revert</button>
         <button on:click={playOne}>Play One</button>
         <button on:click={playAll}>Play All</button>
         <p>
@@ -104,16 +127,16 @@
 <Placed bind:this={placedComponent} />
 <h1 class="text-xl mb-4 mt-5">Hand</h1>
 <div
-    class="grid grid-cols-13 gap-2 p-12 border-dashed border-2 border-red-500 bg-red-100/50 shadow-[inset_0_0_10px_#0003]"
+    class="grid grid-cols-13 gap-2 p-4 border-dashed border-2 border-purple-500 bg-purple-100/50 shadow-[inset_0_0_10px_#0003]"
 >
     {#each handCards as cardNumber, index}
         <img
             draggable="false"
-            class={index == 0
+            class="{index == 0
                 ? counter % 2 === 0
-                    ? "outline-amber-500 outline-4 outline-offset-2"
-                    : "outline-lime-500 outline-4 outline-offset-2"
-                : ""}
+                    ? 'outline-amber-500 outline-4 outline-offset-2 shadow-2xl'
+                    : 'outline-lime-500 outline-4 outline-offset-2 shadow-2xl'
+                : ''} hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
             src="/images/{cardNumber}.webp"
             alt="card {cardNumber}"
         />
