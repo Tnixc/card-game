@@ -1,15 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: DepartureMono;
-  src: url("DepartureMono.woff2");
-  format: woff2;
-}
-
-@theme {
-  --font-sans: "DepartureMono", "sans-serif";
-}
-
 button {
   background: var(--color-stone-200);
   padding: 4px;
