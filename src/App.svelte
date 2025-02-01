@@ -6,6 +6,7 @@
     let cards: number[] = [];
     let debounceTimer: number;
     let handComponent: Hand;
+    let highlightedCardIndex: number | null = null;
 
     function parseCardCode(code: string): number | null {
         const suit = code[0].toUpperCase();
@@ -56,41 +57,40 @@
         cards = [];
     }
 
-    let highlightedCardIndex: number | null = null;
-
-    function calculateCorrectHand() {
-        if (cards.length === 0) return;
-
-        let deck = [...cards].reverse();
+    async function calculateCorrectHand(ms: number) {
+        // Store original deck order
+        const deck = [...cards];
         let hand: number[] = [];
-        let currentIndex = 0;
 
-        function animateStep() {
-            if (deck.length === 0) {
-                highlightedCardIndex = null;
-                return;
+        // Clear any existing cards in hand
+        handComponent.setHand([]);
+
+        // Animate the process
+        for (let i = deck.length - 1; i >= 0; i--) {
+            // Highlight the card we're about to take
+            highlightedCardIndex = i;
+            await new Promise((r) => setTimeout(r, ms));
+
+            // If we have cards in hand, move last card to front
+
+            if (hand.length > 0) {
+                handComponent.setFlash(true);
+                const lastCard = hand.pop()!;
+                hand.unshift(lastCard);
+                await new Promise((r) => setTimeout(r, ms));
+                handComponent.setFlash(false);
+                handComponent.setHand(hand);
+                await new Promise((r) => setTimeout(r, ms));
             }
 
-            // Highlight the current card
-            highlightedCardIndex = currentIndex;
-
-            setTimeout(() => {
-                if (hand.length > 0) {
-                    hand.unshift(hand.pop()!);
-                }
-                hand.unshift(deck.pop()!);
-                handComponent.setHand(hand);
-
-                // Remove the card from display
-                cards = cards.filter((_, i) => i !== currentIndex);
-                currentIndex;
-
-                // Continue animation
-                setTimeout(animateStep, 600);
-            }, 400);
+            // Take card from deck and add to front of hand
+            hand.unshift(deck[i]);
+            handComponent.setHand(hand);
+            await new Promise((r) => setTimeout(r, ms));
         }
 
-        animateStep();
+        // Clear highlight
+        highlightedCardIndex = null;
     }
 </script>
 
@@ -143,7 +143,12 @@
         {/each}
     </div>
     <div class="flex gap-2 items-center my-10">
-        <button on:click={calculateCorrectHand}>Generate Solution</button>
+        <button on:click={calculateCorrectHand(50)}
+            >Generate Solution (fast)</button
+        >
+        <button on:click={calculateCorrectHand(500)}
+            >Generate Solution (slow)</button
+        >
         <hr class="border-dashed grow" />
     </div>
     <Hand bind:this={handComponent} />
