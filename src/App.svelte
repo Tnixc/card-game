@@ -1,5 +1,5 @@
 <script lang="ts">
-    import autoAnimate from "@formkit/auto-animate";
+    // import autoAnimate from "@formkit/auto-animate";
     import Hand from "./lib/Hand.svelte";
 
     let cardInput = "";
@@ -66,13 +66,12 @@
     </h2>
 
     <div class="mb-4 space-y-2">
-        <input
-            type="text"
+        <textarea
             bind:value={cardInput}
             on:input={updateCards}
             placeholder="Enter card codes (e.g. D13 H1 S11)"
-            class="w-full p-2 border border-stone-300 rounded"
-        />
+            class="w-full p-2 border border-stone-300 rounded h-[42px] min-h-[42px] resize-y"
+        ></textarea>
 
         <div class="space-x-2">
             <button on:click={fillAllCards}> Place All Cards </button>
@@ -83,8 +82,7 @@
 
     <h1 class="text-xl mb-4">Table</h1>
     <div
-        class="grid grid-cols-13 gap-2 p-12 border-dashed border-2 border-stone-400 bg-blue-100/50"
-        use:autoAnimate
+        class="grid grid-cols-13 gap-2 p-12 border-blue-500 border-2 border-dashed bg-blue-100/50 shadow-[inset_0_0_10px_#0003]"
     >
         {#each cards as cardNumber, index}
             <img
@@ -93,9 +91,9 @@
                 alt="card {cardNumber}"
                 on:click={(e) => {
                     if (e.shiftKey) {
-                        handComponent.addCardToFront(cardNumber);
-                    } else {
                         handComponent.addCardToBack(cardNumber);
+                    } else {
+                        handComponent.addCardToFront(cardNumber);
                     }
                     cards = cards.filter((_, i) => i !== index);
                 }}
