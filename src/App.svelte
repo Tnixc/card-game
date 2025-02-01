@@ -1,11 +1,11 @@
 <script lang="ts">
     import autoAnimate from "@formkit/auto-animate";
-
-    import { onMount } from "svelte";
+    import Hand from "./lib/Hand.svelte";
 
     let cardInput = "";
     let cards: number[] = [];
     let debounceTimer: number;
+    let handComponent: Hand;
 
     function parseCardCode(code: string): number | null {
         const suit = code[0].toUpperCase();
@@ -44,6 +44,13 @@
         updateCards();
     }
 
+    function fillOneSuite() {
+        const arr = [];
+        for (let i = 1; i <= 13; i++) arr.push(`S${i}`);
+        cardInput = arr.join(" ");
+        updateCards();
+    }
+
     function clearCards() {
         cardInput = "";
         cards = [];
@@ -68,7 +75,8 @@
         />
 
         <div class="space-x-2">
-            <button on:click={fillAllCards}> Fill All Cards </button>
+            <button on:click={fillAllCards}> Place All Cards </button>
+            <button on:click={fillOneSuite}> Place One Suite </button>
             <button on:click={clearCards}> Clear </button>
         </div>
     </div>
@@ -78,11 +86,22 @@
         class="grid grid-cols-13 gap-2 p-12 border-dashed border-2 border-stone-400 bg-blue-100/50"
         use:autoAnimate
     >
-        {#each cards as cardNumber}
-            <img src="/images/{cardNumber}.webp" alt="card {cardNumber}" />
+        {#each cards as cardNumber, index}
+            <img
+                draggable="false"
+                src="/images/{cardNumber}.webp"
+                alt="card {cardNumber}"
+                on:click={(e) => {
+                    if (e.shiftKey) {
+                        handComponent.addCardToFront(cardNumber);
+                    } else {
+                        handComponent.addCardToBack(cardNumber);
+                    }
+                    cards = cards.filter((_, i) => i !== index);
+                }}
+            />
         {/each}
     </div>
+    <hr class="border-dashed my-10" />
+    <Hand bind:this={handComponent} />
 </main>
-
-<style>
-</style>
