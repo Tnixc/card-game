@@ -123,19 +123,24 @@
     }
 </script>
 
-<div class="mb-4 space-y-2">
+<div class="mb-10 space-y-2">
     <textarea
         bind:value={handInput}
         on:input={updateHand}
         placeholder="Enter cards in your hand (e.g. D13 H1 S11)"
-        class="w-full p-2 border border-stone-300 rounded h-[42px] min-h-[42px] resize-y"
+        class="nes-textarea resize-y"
     />
     <div class="flex gap-3 items-center">
-        <button on:click={clearHand}>Clear Hand</button>
-        <button on:click={revertHand} disabled={!hasStoredState}>Revert</button>
-        <button on:click={playOne}>Play One</button>
-        <button on:click={playAll}>Play All</button>
-        <p>
+        <button class="nes-btn is-success" on:click={playOne}>Play One</button>
+        <button class="nes-btn is-primary" on:click={playAll}>Play All</button>
+        <button class="nes-btn is-error" on:click={clearHand}>Clear Hand</button
+        >
+        <button
+            class="nes-btn is-warning"
+            on:click={revertHand}
+            disabled={!hasStoredState}>Revert Cards</button
+        >
+        <p class="font-bold pt-3">
             Click on cards on the table to add to your hand. Hold *shift* to add
             the the back of your hand
         </p>
@@ -143,24 +148,27 @@
 </div>
 
 <Placed bind:this={placedComponent} />
-<h1 class="text-xl mb-4 mt-5">Hand</h1>
+
 <div
-    class="grid grid-cols-13 gap-2 p-4 border-dashed border-2 border-purple-500 bg-purple-100/50 shadow-[inset_0_0_10px_#0003]"
+    class="nes-container with-title shadow-[inset_0_0_10px_#0004] bg-[#F7D51F33] mt-10"
 >
-    {#each handCards as cardNumber, index}
-        <img
-            draggable="false"
-            class="{!isFlashLast && index === 0
-                ? counter % 2 === 0
-                    ? 'outline-amber-500 outline-4 outline-offset-2 shadow-2xl'
-                    : 'outline-lime-500 outline-4 outline-offset-2 shadow-2xl'
-                : isFlashLast && index === handCards.length - 1
-                  ? 'outline-purple-500 outline-4 outline-offset-2 shadow-2xl'
-                  : index % 2 === 1
-                    ? 'outline-lime-500/50 outline-2 outline-offset-2'
-                    : ''} hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
-            src="/images/{cardNumber}.webp"
-            alt="card {cardNumber}"
-        />
-    {/each}
+    <p class="title font-bold -translate-y-2 scale-120 border-3">Hand</p>
+    <div class="grid grid-cols-13 gap-2">
+        {#each handCards as cardNumber, index}
+            <img
+                draggable="false"
+                class="{!isFlashLast && index === 0
+                    ? counter % 2 === 0
+                        ? 'outline-amber-500 outline-4 outline-offset-2 shadow-2xl'
+                        : 'outline-lime-500 outline-4 outline-offset-2 shadow-2xl'
+                    : isFlashLast && index === handCards.length - 1
+                      ? 'outline-purple-500 outline-4 outline-offset-2 shadow-2xl'
+                      : index % 2 === 1
+                        ? 'outline-lime-500/50 outline-2 outline-offset-2'
+                        : ''} hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
+                src="/images/{cardNumber}.webp"
+                alt="card {cardNumber}"
+            />
+        {/each}
+    </div>
 </div>

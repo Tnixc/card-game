@@ -1,23 +1,50 @@
 @import "tailwindcss";
 
-button {
-  background: var(--color-stone-200);
-  padding: 4px;
-  border: 2px solid var(--color-stone-400);
-
-  &:hover {
-    background: var(--color-stone-300);
-  }
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/Minecraft.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-html {
-  background: var(--color-stone-100);
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/Minecraft-bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 img {
-  background: var(--color-neutral-100);
+  background: #FFFFFF;
   width: 96px;
-  border: 2px solid var(--color-stone-300);
+  border: 2px solid #7A7C7F !important;
   transition: 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
   user-select: none;
+}
+
+html,
+body,
+pre,
+code,
+kbd,
+samp {
+  font-family: "Minecraft", monospace !important;
+}
+
+button {
+  font-weight: bold;
+}
+
+@media (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  .nes-btn,
+  .nes-input,
+  .nes-textarea {
+    border-image-repeat: stretch !important;
+  }
+}
+
+textarea {
+  outline-color: black;
 }

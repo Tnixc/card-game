@@ -107,49 +107,68 @@
             bind:value={cardInput}
             on:input={updateCards}
             placeholder="Enter card codes (e.g. D13 H1 S11)"
-            class="w-full p-2 border border-stone-300 rounded h-[42px] min-h-[42px] resize-y"
+            class="nes-textarea resize-y"
         ></textarea>
 
         <div class="space-x-2">
-            <button on:click={fillAllCards}> Place All Cards </button>
-            <button on:click={fillOneSuite}> Place One Suite </button>
-            <button on:click={clearCards}> Clear </button>
+            <button class="nes-btn" on:click={fillAllCards}>
+                Place All Cards
+            </button>
+            <button class="nes-btn" on:click={fillOneSuite}>
+                Place One Suite
+            </button>
+            <button class="nes-btn is-error" on:click={clearCards}>
+                Clear
+            </button>
         </div>
     </div>
 
-    <h1 class="text-xl mb-4">Table</h1>
     <div
-        class="grid grid-cols-13 gap-2 p-4 border-blue-500 border-2 border-dashed bg-blue-100/50 shadow-[inset_0_0_10px_#0003]"
+        class="nes-container with-title shadow-[inset_0_0_10px_#0004] bg-[#1F9CED22]"
     >
-        <!-- Update the card display in the template -->
-        {#each cards as cardNumber, index}
-            <img
-                class="hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200
+        <p class="title font-bold -translate-y-2 scale-120 border-3">Table</p>
+        <div class="grid grid-cols-13 gap-2">
+            <!-- Update the card display in the template -->
+            {#each cards as cardNumber, index}
+                <img
+                    class="hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200
                     {index === highlightedCardIndex
-                    ? 'outline outline-4 outline-offset-2 outline-amber-500 shadow-2xl'
-                    : ''}"
-                draggable="false"
-                src="/images/{cardNumber}.webp"
-                alt="card {cardNumber}"
-                on:click={(e) => {
-                    if (e.shiftKey) {
-                        handComponent.addCardToBack(cardNumber);
-                    } else {
-                        handComponent.addCardToFront(cardNumber);
-                    }
-                    cards = cards.filter((_, i) => i !== index);
-                }}
-            />
-        {/each}
+                        ? 'outline outline-4 outline-offset-2 outline-amber-500 shadow-2xl'
+                        : ''}"
+                    draggable="false"
+                    src="/images/{cardNumber}.webp"
+                    alt="card {cardNumber}"
+                    on:click={(e) => {
+                        if (e.shiftKey) {
+                            handComponent.addCardToBack(cardNumber);
+                        } else {
+                            handComponent.addCardToFront(cardNumber);
+                        }
+                        cards = cards.filter((_, i) => i !== index);
+                    }}
+                />
+            {/each}
+        </div>
     </div>
+
     <div class="flex gap-2 items-center my-10">
-        <button on:click={calculateCorrectHand(50)}
+        <button
+            class="nes-btn is-primary"
+            on:click={() => calculateCorrectHand(50)}
             >Generate Solution (fast)</button
         >
-        <button on:click={calculateCorrectHand(500)}
+        <button class="nes-btn" on:click={() => calculateCorrectHand(500)}
             >Generate Solution (slow)</button
         >
-        <hr class="border-dashed grow" />
+        <hr class="border border-2 grow" />
     </div>
     <Hand bind:this={handComponent} />
+    <div class="mt-10">
+        <a href="https://github.com/Tnixc/card-game" target="_blank">
+            <i class="nes-octocat animate is-small scale-50"></i>
+        </a>
+        <a href="https://nostalgic-css.github.io/NES.css/" target="_blank">
+            <i class="nes-jp-logo scale-75 -translate-y-5"></i>
+        </a>
+    </div>
 </main>
