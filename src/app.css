@@ -25,7 +25,7 @@ html {
 }
 
 img {
-  background: var(--color-neutral-200);
+  background: var(--color-neutral-100);
   width: 96px;
   border: 2px solid var(--color-stone-300);
   transition: 250ms cubic-bezier(0.075, 0.82, 0.165, 1);

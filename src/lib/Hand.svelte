@@ -146,13 +146,15 @@
     {#each handCards as cardNumber, index}
         <img
             draggable="false"
-            class="{index === 0
+            class="{!isFlashLast && index === 0
                 ? counter % 2 === 0
                     ? 'outline-amber-500 outline-4 outline-offset-2 shadow-2xl'
                     : 'outline-lime-500 outline-4 outline-offset-2 shadow-2xl'
                 : isFlashLast && index === handCards.length - 1
                   ? 'outline-purple-500 outline-4 outline-offset-2 shadow-2xl'
-                  : ''} hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
+                  : index % 2 === 1
+                    ? 'outline-lime-500/50 outline-2 outline-offset-2'
+                    : ''} hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
             src="/images/{cardNumber}.webp"
             alt="card {cardNumber}"
         />
