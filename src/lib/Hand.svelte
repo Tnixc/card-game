@@ -131,15 +131,22 @@
         class="nes-textarea resize-y"
     />
     <div class="flex gap-3 items-center">
-        <button class="nes-btn is-success" on:click={playOne}>Play One</button>
-        <button class="nes-btn is-primary" on:click={playAll}>Play All</button>
-        <button class="nes-btn is-error" on:click={clearHand}>Clear Hand</button
-        >
-        <button
-            class="nes-btn is-warning"
-            on:click={revertHand}
-            disabled={!hasStoredState}>Revert Cards</button
-        >
+        <div class="grid grid-cols-4 gap-2">
+            <button class="nes-btn is-success" on:click={playOne}
+                >Play One</button
+            >
+            <button class="nes-btn is-primary" on:click={playAll}
+                >Play All</button
+            >
+            <button class="nes-btn is-error" on:click={clearHand}
+                >Clear Hand</button
+            >
+            <button
+                class="nes-btn is-warning"
+                on:click={revertHand}
+                disabled={!hasStoredState}>Revert Cards</button
+            >
+        </div>
         <p class="font-bold pt-3">
             Click on cards on the table to add to your hand. Hold *shift* to add
             the the back of your hand
