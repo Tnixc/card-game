@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: DepartureMono;
+  src: url("DepartureMono.woff2");
+  format: woff2;
+}
+
+@theme {
+  --font-sans: "DepartureMono", "sans-serif";
+}
+
+button {
+  background: var(--color-stone-200);
+  padding: 4px;
+  border: 2px solid var(--color-stone-400);
+  &:hover {
+    background: var(--color-stone-300);
+  }
+}
+
+html {
+  background: var(--color-stone-100);
+}
+
+img {
+  background: var(--color-neutral-200);
+  width: 96px;
+  border: 2px solid var(--color-stone-300);
+  transition: 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  &:hover {
+    transform: scale(1.2) rotate(5deg);
+    z-index: 99;
+    box-shadow: 10px 10px 20px #0004;
+  }
+}
