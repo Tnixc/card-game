@@ -55,6 +55,43 @@
         cardInput = "";
         cards = [];
     }
+
+    let highlightedCardIndex: number | null = null;
+
+    function calculateCorrectHand() {
+        if (cards.length === 0) return;
+
+        let deck = [...cards].reverse();
+        let hand: number[] = [];
+        let currentIndex = 0;
+
+        function animateStep() {
+            if (deck.length === 0) {
+                highlightedCardIndex = null;
+                return;
+            }
+
+            // Highlight the current card
+            highlightedCardIndex = currentIndex;
+
+            setTimeout(() => {
+                if (hand.length > 0) {
+                    hand.unshift(hand.pop()!);
+                }
+                hand.unshift(deck.pop()!);
+                handComponent.setHand(hand);
+
+                // Remove the card from display
+                cards = cards.filter((_, i) => i !== currentIndex);
+                currentIndex;
+
+                // Continue animation
+                setTimeout(animateStep, 600);
+            }, 400);
+        }
+
+        animateStep();
+    }
 </script>
 
 <main class="p-10">
@@ -84,9 +121,13 @@
     <div
         class="grid grid-cols-13 gap-2 p-4 border-blue-500 border-2 border-dashed bg-blue-100/50 shadow-[inset_0_0_10px_#0003]"
     >
+        <!-- Update the card display in the template -->
         {#each cards as cardNumber, index}
             <img
-                class="hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
+                class="hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200
+                    {index === highlightedCardIndex
+                    ? 'outline outline-4 outline-offset-2 outline-amber-500 shadow-2xl'
+                    : ''}"
                 draggable="false"
                 src="/images/{cardNumber}.webp"
                 alt="card {cardNumber}"
@@ -101,6 +142,9 @@
             />
         {/each}
     </div>
-    <hr class="border-dashed my-10" />
+    <div class="flex gap-2 items-center my-10">
+        <button on:click={calculateCorrectHand}>Generate Solution</button>
+        <hr class="border-dashed grow" />
+    </div>
     <Hand bind:this={handComponent} />
 </main>

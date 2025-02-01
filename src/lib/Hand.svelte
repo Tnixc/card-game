@@ -8,6 +8,8 @@
     let placedComponent: Placed;
     let playTimer: number;
     let counter = 0;
+    export let isSwapping = false;
+
     export function addCardToBack(cardNumber: number) {
         handCards = [...handCards, cardNumber];
         updateInputFromCards();
@@ -98,10 +100,20 @@
         handCards = [];
         counter = 0;
         hasStoredState = false;
+        updateInputFromCards();
     }
+
     function clearPlaced() {
         if (placedComponent) placedComponent.clear();
         counter = 0;
+    }
+
+    export function setHand(newHand: number[]) {
+        handCards = newHand;
+        updateInputFromCards();
+        counter = 0;
+        hasStoredState = false;
+        if (placedComponent) placedComponent.clear();
     }
 </script>
 
@@ -113,10 +125,12 @@
         class="w-full p-2 border border-stone-300 rounded h-[42px] min-h-[42px] resize-y"
     />
     <div class="flex gap-3 items-center">
-        <button on:click={clearHand}>Clear Hand</button>
-        <button on:click={revertHand} disabled={!hasStoredState}>Revert</button>
-        <button on:click={playOne}>Play One</button>
-        <button on:click={playAll}>Play All</button>
+        <button class="" on:click={clearHand}>Clear Hand</button>
+        <button class="" on:click={revertHand} disabled={!hasStoredState}
+            >Revert</button
+        >
+        <button class="" on:click={playOne}>Play One</button>
+        <button class="" on:click={playAll}>Play All</button>
         <p>
             Click on cards on the table to add to your hand. Hold *shift* to add
             the the back of your hand
@@ -132,11 +146,15 @@
     {#each handCards as cardNumber, index}
         <img
             draggable="false"
-            class="{index == 0
-                ? counter % 2 === 0
-                    ? 'outline-amber-500 outline-4 outline-offset-2 shadow-2xl'
-                    : 'outline-lime-500 outline-4 outline-offset-2 shadow-2xl'
-                : ''} hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
+            class="{index === 0 && isSwapping
+                ? 'outline-amber-500 outline-4 outline-offset-2 shadow-2xl'
+                : index === handCards.length - 1 && isSwapping
+                  ? 'outline-lime-500 outline-4 outline-offset-2 shadow-2xl'
+                  : index === 0
+                    ? counter % 2 === 0
+                        ? 'outline-amber-500 outline-4 outline-offset-2 shadow-2xl'
+                        : 'outline-lime-500 outline-4 outline-offset-2 shadow-2xl'
+                    : ''} hover:scale-[1.1] hover:rotate-6 hover:shadow-lg duration-200"
             src="/images/{cardNumber}.webp"
             alt="card {cardNumber}"
         />
