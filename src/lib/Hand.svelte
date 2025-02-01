@@ -85,7 +85,11 @@
             handCards = rest;
         } else {
             // Move to back
+            setFlash(true);
             handCards = [...rest, first];
+            setTimeout(() => {
+                setFlash(false);
+            }, 200);
         }
         counter++;
         updateInputFromCards();
