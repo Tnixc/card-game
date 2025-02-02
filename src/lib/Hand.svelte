@@ -104,11 +104,12 @@
         playTimer = setTimeout(playAll, 100);
     }
 
-    function clearHand() {
+    function clear() {
         handInput = "";
         handCards = [];
         counter = 0;
         hasStoredState = false;
+        clearPlaced();
     }
 
     function clearPlaced() {
@@ -140,8 +141,8 @@
             <button class="nes-btn is-primary" on:click={playAll}
                 >Play All</button
             >
-            <button class="nes-btn is-error" on:click={clearHand}
-                >Clear Hand</button
+            <button class="nes-btn is-error" on:click={clear}
+                >Clear All</button
             >
             <button
                 class="nes-btn is-warning"
